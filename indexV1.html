@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>Assignment4</title>
+</head>
+
+<style>
+    .hide {
+        display: none;
+    }
+
+    .table1 {
+        width: 30%;
+    }
+
+    .table1 td {
+        width: 15%;
+    }
+
+    .table2 {
+        width: 100%;
+    }
+
+    .table2,
+    .table2 tr,
+    .table2 td,
+    .table2 th {
+        text-align: center;
+        border: 0.5px solid rgb(141, 135, 135);
+        border-collapse: collapse;
+        padding: 5px;
+    }
+
+    .table2 th,
+    .table2 td {
+        width: 10%;
+    }
+
+    .table2 tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .table2 th {
+        background-color: #4CAF50;
+        color: white;
+    }
+</style>
+
+<body>
+    <div>
+        <h1>Borrow and Make Money(Assign4)</h1>
+    </div>
+    <div>
+        <form name="form1" id="idform1" method='get' onsubmit="return passData()" action='nothere.php'>
+            <table class="table1">
+                <tr>
+                    <td>Company Name</td>
+                    <td><input type="text" name="name" placeholder="Company name" autofocus required /></td>
+                </tr>
+                <tr>
+                    <td>Owner</td>
+                    <td><input type="text" name="owner" placeholder="John" /></td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td><input type="text" name="address" placeholder="toronto" /></td>
+                </tr>
+                <tr>
+                    <td>Phone number</td>
+                    <td><input type="text" name="phone" placeholder="416-459-3212" /></td>
+                </tr>
+                <tr>
+                    <td>Annual sales</td>
+                    <td><input type="number" name="sales" placeholder="1600" /></td>
+                </tr>
+                <tr>
+                    <td>Borrow amount</td>
+                    <td><input type="number" name="borrow" placeholder="1200" required /></td>
+                </tr>
+                <tr>
+                    <td>Payment terms</td>
+                    <td><input type="number" name="paymentTerms" placeholder="10" min="0" required /></td>
+                </tr>
+                <tr class="hide">
+                    <td>Interest </td>
+                    <td><input type="number" name="interest" /></td>
+                </tr>
+                <tr class="hide">
+                    <td>Payment </td>
+                    <td><input type="number" name="payment" /></td>
+                </tr>
+                <tr class="hide">
+                    <td>Profit </td>
+                    <td><input type="number" name="profit" /></td>
+                </tr>
+
+            </table>
+            <input type="reset" />
+            <input type="submit" />
+        </form>
+    </div>
+<hr>
+    <div>
+        <button id="getResult">Calculation</button>
+        <form name="form2" id="idform2">
+        </form>
+    </div>
+</body>
+<script>
+    var isPassTitle = false;
+
+    function passData() {
+
+        // pass form1 title to the form2 
+        var list = document.querySelectorAll('.table1 tr td:first-child');
+        var table2 = document.createElement('table');
+        var tr = document.createElement('tr');
+        var borrow = document.form1.borrow.value;
+        var paymentTerms = document.form1.paymentTerms.value;
+        var interest = document.form1.interest;
+        var payment = document.form1.payment;
+        var profit = document.form1.profit;
+        interest.value = (+borrow * +paymentTerms * 0.03 / 12).toFixed(2);
+        payment.value = (+borrow + +interest.value).toFixed(2);
+        profit.value = (Number(payment.value) - Number(borrow)).toFixed(2);
+        // console.log(interest.value);
+        // console.log(payment.value);
+
+        var table2class = document.createAttribute("class");
+        table2class.value = "table2";
+        table2.setAttributeNode(table2class);
+
+        while (!isPassTitle) {
+            var trhead = document.createElement('tr');
+            for (let i = 0; i < list.length; i++) {
+                var th = document.createElement('th');
+                th.textContent = list[i].textContent;
+                trhead.appendChild(th);
+            }
+            table2.appendChild(trhead);
+            document.form2.appendChild(table2);
+            isPassTitle = true;
+        }
+
+        // pass form1 row data to the form2 and append the data
+        for (let i = 0; i < list.length; i++) {
+            var td = document.createElement('td');
+            td.textContent = document.form1[i].value;
+            tr.appendChild(td);
+        }
+        table2.appendChild(tr);
+        document.form2.appendChild(table2);
+
+        return false;
+    }
+
+</script>
+
+</html>
